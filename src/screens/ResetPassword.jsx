@@ -7,8 +7,8 @@ import { HOST, RESETPASSWORD_ROUTE, SIGNUP_ROUTE } from "../utils/constants";
 
 export default function ResetPassword() {
     const location = useLocation();
-    const resetToken = location.state?.resetToken || ''; // Ensure resetToken has a default empty value
-    console.log("Received resetToken:", resetToken); // Check if the token is being received
+    const accessToken = localStorage.getItem("access_token"); // Ensure resetToken has a default empty value
+    console.log("Received resetToken:", accessToken); // Check if the token is being received
 
     const [show, setShow] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -19,7 +19,7 @@ export default function ResetPassword() {
 
     const onSubmit = async (data) => {
         try {
-            const token = resetToken
+            const token = accessToken
             const confirm_password = data.confirm_password;
             const password = data.password;
 

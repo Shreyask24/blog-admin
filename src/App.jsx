@@ -7,6 +7,7 @@ import ForgotPassword from './screens/ForgotPassword';
 import Profile from './screens/Profile';
 import ResetPassword from './screens/ResetPassword';
 import { useEffect, useState } from 'react';
+import RecycleBin from './screens/RecycleBin';
 
 function App() {
   const [token, setToken] = useState(!!localStorage.getItem('access_token'));
@@ -31,6 +32,7 @@ function App() {
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/reset-password' element={<ResetPassword />} />
+        <Route path='/recycle-bin' element={<RecycleBin />} />
         <Route path='*' element={<Navigate to={token ? "/blogs" : "/sign-in"} />} />
       </Routes>
     </BrowserRouter>

@@ -154,9 +154,12 @@ function Navbar() {
                             </MenuItem>
                             </Link>
 
-                            <MenuItem onClick={handleCloseUserMenu}>
-                                <Typography sx={{ textAlign: 'center' }}>Recycle Bin</Typography>
-                            </MenuItem>
+                            <Link to="/recycle-bin">
+
+                                <MenuItem onClick={handleCloseUserMenu}>
+                                    <Typography sx={{ textAlign: 'center' }}>Recycle Bin</Typography>
+                                </MenuItem>
+                            </Link>
 
                             <MenuItem onClick={handleCloseUserMenu}>
                                 <Typography onClick={handleLogout} sx={{ textAlign: 'center' }}>Logout</Typography>
@@ -170,99 +173,3 @@ function Navbar() {
     );
 }
 export default Navbar;
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import * as React from 'react';
-// import AppBar from '@mui/material/AppBar';
-// import Box from '@mui/material/Box';
-// import Toolbar from '@mui/material/Toolbar';
-// import IconButton from '@mui/material/IconButton';
-// import Typography from '@mui/material/Typography';
-// import Menu from '@mui/material/Menu';
-// import MenuIcon from '@mui/icons-material/Menu';
-// import Container from '@mui/material/Container';
-// import Avatar from '@mui/material/Avatar';
-// import Button from '@mui/material/Button';
-// import Tooltip from '@mui/material/Tooltip';
-// import MenuItem from '@mui/material/MenuItem';
-
-// import SignIn from "./SignIn"
-
-
-// const pages = ['Blog'];
-// const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
-// function Navbar() {
-//     const [anchorElNav, setAnchorElNav] = React.useState(null);
-//     const [anchorElUser, setAnchorElUser] = React.useState(null);
-
-//     const handleOpenNavMenu = (event) => {
-//         setAnchorElNav(event.currentTarget);
-//     };
-//     const handleOpenUserMenu = (event) => {
-//         setAnchorElUser(event.currentTarget);
-//     };
-
-//     const handleCloseNavMenu = () => {
-//         setAnchorElNav(null);
-//     };
-
-//     const handleCloseUserMenu = () => {
-//         setAnchorElUser(null);
-//     };
-
-//     return (
-//         <AppBar position="static" sx={{ bgcolor: 'text.primary' }}>
-//             <Container maxWidth="xl">
-//                 <Toolbar disableGutters>
-//                     <Typography
-//                         variant="h6"
-//                         noWrap
-//                         component="a"
-//                         href="#app-bar-with-responsive-menu"
-//                         sx={{
-//                             mr: 2,
-//                             display: { xs: 'none', md: 'flex' },
-//                             fontFamily: 'monospace',
-//                             fontWeight: 700,
-//                             letterSpacing: '.3rem',
-//                             color: 'inherit',
-//                             textDecoration: 'none',
-//                         }}
-//                     >
-//                         Admin
-//                     </Typography>
-
-
-//                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-//                         {pages.map((page) => (
-//                             <Button
-//                                 key={page}
-//                                 onClick={handleCloseNavMenu}
-//                                 sx={{ my: 2, color: 'white', display: 'block' }}
-//                             >
-//                                 {page}
-//                             </Button>
-//                         ))}
-//                     </Box>
-//                     <Box sx={{ flexGrow: 0 }}>
-
-//                         <SignIn />
-//                     </Box>
-//                 </Toolbar>
-//             </Container>
-//         </AppBar>
-//     );
-// }
-// export default Navbar;

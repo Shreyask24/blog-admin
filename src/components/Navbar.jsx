@@ -154,12 +154,12 @@ function Navbar() {
                             </MenuItem>
                             </Link>
 
-                            <Link to="/recycle-bin">
+                            {/* <Link to="/recycle-bin">
 
                                 <MenuItem onClick={handleCloseUserMenu}>
                                     <Typography sx={{ textAlign: 'center' }}>Recycle Bin</Typography>
                                 </MenuItem>
-                            </Link>
+                            </Link> */}
 
                             <MenuItem onClick={handleCloseUserMenu}>
                                 <Typography onClick={handleLogout} sx={{ textAlign: 'center' }}>Logout</Typography>

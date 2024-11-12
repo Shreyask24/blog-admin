@@ -17,3 +17,5 @@ export const GET_ROUTE = `api/web/myposts`
 export const UPDATE_POST_ROUTE = `api/web/posts`
 export const DELETE_POST_ROUTE = `api/web/posts`
 
+export const SEARCH_POSTS_ROUTE = `api/web/posts/title`
+

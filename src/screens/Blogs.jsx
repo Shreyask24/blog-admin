@@ -1,14 +1,15 @@
 import { useForm } from "react-hook-form";
-import React, { useEffect, useState } from 'react';
-import { ARCHIEVED_ROUTE, DELETE_POST_ROUTE, GET_ROUTE, HOST, UPDATE_POST_ROUTE } from '../utils/constants';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ARCHIEVED_ROUTE, DELETE_POST_ROUTE, GET_ROUTE, HOST, SEARCH_POSTS_ROUTE, UPDATE_POST_ROUTE } from '../utils/constants';
 import axios from 'axios';
 import DOMPurify from 'dompurify';
 import { Card } from '@mui/material';
-import { Edit, Favorite, DeleteSharp, ArchiveOutlined } from '@mui/icons-material';
+import { Edit, Favorite, DeleteSharp, ArchiveOutlined, SearchOffOutlined, SearchOutlined } from '@mui/icons-material';
 import JoditEditor from "jodit-react";
 import { useNavigate } from "react-router-dom";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import { debounce } from "lodash";
 
 const Blogs = () => {
     const navigate = useNavigate();
@@ -22,6 +23,10 @@ const Blogs = () => {
     const [isArchived, setIsArchived] = useState({});
     const [loading, setLoading] = useState(true);
     const accessToken = localStorage.getItem("access_token");
+    const [isDeleted, setIsDeleted] = useState({});
+
+    const [searchText, setSearchText] = useState("");
+
 
     const headers = {
         'Content-Type': 'application/json',
@@ -30,6 +35,25 @@ const Blogs = () => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const blogsPerPage = 5;
+
+    const handleSearchDebounced = useCallback(
+        debounce(async (searchValue) => {
+            if (searchValue === "") {
+                const { data } = await axios.get(`${HOST}/${GET_ROUTE}`, { headers });
+                setBlogs(data);
+            } else {
+                const response = await axios.get(`${HOST}/${SEARCH_POSTS_ROUTE}/${searchValue}/`, { headers });
+                setBlogs(response.data);
+            }
+        }, 500),
+        []
+    );
+
+    const handleSearch = (e) => {
+        const searchValue = e.target.value;
+        setSearchText(searchValue);
+        handleSearchDebounced(searchValue);
+    };
 
     useEffect(() => {
         if (!accessToken) {
@@ -57,6 +81,7 @@ const Blogs = () => {
                     summaryStates[blog.id] = blog.summary;
                     thumbnailUrls[blog.id] = blog.thumbnail;
                     archivedStates[blog.id] = blog.is_archived;
+                    isDeleted[blog.id] = blog.is_deleted;
                 });
 
                 setEditState(editStates);
@@ -65,6 +90,7 @@ const Blogs = () => {
                 setSummaryState(summaryStates);
                 setThumbnailUrl(thumbnailUrls);
                 setIsArchived(archivedStates);
+                setIsDeleted(isDeleted)
             } catch (error) {
                 console.error("Error fetching blogs:", error);
             } finally {
@@ -80,7 +106,18 @@ const Blogs = () => {
     }
 
     const toggleEdit = (blogId) => {
-        setEditState(prevState => ({ ...prevState, [blogId]: !prevState[blogId] }));
+        setEditState(prevState => {
+            const newEditState = !prevState[blogId];
+
+            // Update URL based on edit state
+            if (newEditState) {
+                navigate(`/blogs/${blogId}`); // Add blogId to the URL when editing
+            } else {
+                navigate(`/blogs`); // Remove blogId from the URL when edit mode is closed
+            }
+
+            return { ...prevState, [blogId]: newEditState };
+        });
     };
 
     const handleContentChange = (content, blogId) => {
@@ -123,9 +160,8 @@ const Blogs = () => {
 
     const handleDelete = async (blogId) => {
         try {
-            await axios.delete(`${HOST}/${DELETE_POST_ROUTE}/${blogId}/`, { headers });
-            setBlogs(prevBlogs => prevBlogs.filter(blog => blog.id !== blogId));
-            navigate("/recycle-bin");
+            const response = await axios.delete(`${HOST}/${DELETE_POST_ROUTE}/${blogId}/`, { headers });
+            console.log(response.data)
         } catch (error) {
             console.error("Error deleting blog:", error);
         }
@@ -150,10 +186,18 @@ const Blogs = () => {
         setCurrentPage(value);
     };
 
+
+
     return (
         <div className="w-full">
+            <div className=" flex justify-center items-center mt-5 mb-5">
+                <input type="search" placeholder="Search blogs by title" className="border border-purple-500 w-[40vh] h-[5vh] rounded-md" value={searchText} onChange={handleSearch} name="" id="" />
+
+            </div>
+
             {currentBlogs.map(blog => (
                 <Card key={blog.id} className="p-5">
+
                     <form onSubmit={handleSubmit(data => onSubmit(data, blog.id))} className="shadow-md p-8 bg-white rounded mb-4">
                         <div>
                             <div onClick={() => toggleEdit(blog.id)} className="text-white cursor-pointer hover:bg-purple-700 bg-purple-500 rounded-md p-2 mt-[-5vh] w-11 items-center ml-[90vw] mb-5">
@@ -211,13 +255,17 @@ const Blogs = () => {
                         <div>Created: {new Date(blog.created_at).toLocaleString()}</div>
                         <div>Updated: {new Date(blog.updated_at).toLocaleString()}</div>
                         <div>Archived: {isArchived[blog.id] ? 'Yes' : 'No'}</div>
+                        <div>Soft Deleted: {isDeleted[blog.id] ? 'Yes' : 'No'}</div>
                     </form>
                 </Card>
             ))}
 
-            <Stack spacing={2}>
-                <Pagination count={Math.ceil(blogs.length / blogsPerPage)} page={currentPage} onChange={handlePageChange} />
-            </Stack>
+            <div className="flex justify-center items-center  mt-5 mb-5">
+
+                <Stack spacing={2}>
+                    <Pagination color="secondary" count={Math.ceil(blogs.length / blogsPerPage)} page={currentPage} onChange={handlePageChange} />
+                </Stack>
+            </div>
         </div>
     );
 };

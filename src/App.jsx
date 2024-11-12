@@ -28,6 +28,7 @@ function App() {
         ) : (
           <Route path='/sign-in' element={<SignIn />} />
         )}
+        <Route path="/blogs/:id" element={<Home />} />
         <Route path='/verify-email' element={<VerifyEmail />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/profile' element={<Profile />} />

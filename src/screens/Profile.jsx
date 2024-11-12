@@ -105,12 +105,12 @@ const Profile = () => {
                             Update
                         </button>
 
-                        <div>
+                        {/* <div>
 
                             <Link to="/forgot-password" className="inline-block align-baseline font-bold text-sm text-purple-500 hover:text-purple-800">
                                 Forgot your password?
                             </Link>
-                        </div>
+                        </div> */}
                     </div>
 
                 </form>

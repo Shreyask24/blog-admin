@@ -1,5 +1,5 @@
 import Navbar from '../components/Navbar'
-import { HOST, POST_ROUTE } from '../utils/constants'
+import { HOST, POST_ROUTE, UPLOAD_IMAGE_ROUTE } from '../utils/constants'
 
 
 import React, { useState, useRef, useMemo } from 'react';
@@ -11,6 +11,9 @@ import Blogs from './Blogs';
 const Home = () => {
     const [title, setTitle] = useState("")
     const [blogs, setBlogs] = useState(false)
+
+    const [thumbnailUrl, setThumbnailUrl] = useState("")
+    const [summary, setSummary] = useState("")
 
     const editor = useRef(null);
     const [content, setContent] = useState('');
@@ -24,12 +27,35 @@ const Home = () => {
     };
 
     const onSubmit = async () => {
+        const thumbnail = thumbnailUrl
         try {
-            const response = await axios.post(`${HOST}/${POST_ROUTE}/`, { title, content }, { headers })
+            const response = await axios.post(`${HOST}/${POST_ROUTE}/`, { title, content, summary, thumbnail }, { headers })
             console.log(response.data)
             window.location.reload()
         } catch (error) {
             console.log("Error:", error.message);
+        }
+    };
+
+
+    const handleImage = async (e) => {
+        const file = e.target.files[0];
+
+        if (file) {
+            const formData = new FormData();
+            formData.append("image", file); // Append the actual file object
+
+            try {
+                const response = await axios.post(`${HOST}/${UPLOAD_IMAGE_ROUTE}/`, formData, {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                    },
+                });
+                console.log(response.data);
+                setThumbnailUrl(response.data.image_url)
+            } catch (error) {
+                console.log("Error:", error.message);
+            }
         }
     };
 
@@ -49,6 +75,17 @@ const Home = () => {
                                     placeholder="Title"
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
+                                />
+
+                                <input type="file" placeholder="Upload thumbnail" onChange={handleImage}
+                                    accept='.png, .jpg, .jpeg, .svg, .webp' className="border rounded w-full py-2 px-4 text-gray-700 mb-2" />
+
+
+                                <input
+                                    className="mt-5 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-black"
+                                    placeholder="Summary"
+                                    value={summary}
+                                    onChange={(e) => setSummary(e.target.value)}
                                 />
 
                                 <div>

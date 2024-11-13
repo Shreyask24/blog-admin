@@ -10,7 +10,7 @@ import Navbar from '../components/Navbar';
 const BlogList = () => {
     const [blogs, setBlogs] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [showForm, setShowForm] = useState(false); // Controls form visibility
+    const [showForm, setShowForm] = useState(false);
 
     const [title, setTitle] = useState("");
     const [thumbnailUrl, setThumbnailUrl] = useState("");
@@ -82,14 +82,14 @@ const BlogList = () => {
                     {blogs.map((blog) => (
                         <div className="cursor-pointer font-serif" key={blog.id} onClick={() => navigate(`/blogs/${blog.id}`)}>
                             <h2 className="text-2xl font-bold">{blog.title}</h2>
-                            <img src={blog.thumbnail[3]} alt="" style={{ width: '100px', height: 'auto' }} />
+                            <img src={blog.thumbnail} alt="" style={{ width: '100px', height: 'auto' }} />
                             <p className="mb-10">{blog.summary}</p>
                         </div>
                     ))}
                 </div>
             </div>
 
-            {showForm && ( // Conditionally render form based on showForm
+            {showForm && (
                 <div className="bg-gray-200 w-full h-[90vh] flex items-center justify-center">
                     <div className="w-full flex justify-center items-center">
                         <div className="bg-white w-[150vh] p-10 flex flex-col justify-center shadow-md rounded mb-4">

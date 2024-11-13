@@ -1,13 +1,12 @@
-// PreviewBlogs.jsx
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { HOST, GET_ROUTE, UPDATE_POST_ROUTE, DELETE_POST_ROUTE, ARCHIEVED_ROUTE } from '../utils/constants'; // Ensure routes are defined in constants
+import { HOST, GET_ROUTE, UPDATE_POST_ROUTE, DELETE_POST_ROUTE, ARCHIEVED_ROUTE } from '../utils/constants';
 import DOMPurify from 'dompurify';
 import JoditEditor from 'jodit-react';
 import { Edit, DeleteSharp, ArchiveOutlined, Favorite } from '@mui/icons-material';
 
-const PreviewBlogs = () => {
+const EditBlogs = () => {
     const { blogId } = useParams();
     const [blog, setBlog] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -119,6 +118,7 @@ const PreviewBlogs = () => {
                         <h1>{blog.title}</h1>
                         <img src={blog.thumbnail} alt="" />
                         <h2>{blog.summary}</h2>
+                        <h2>{blog.claps}</h2>
                         <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(blog.content) }} />
                     </div>
                 )}
@@ -138,4 +138,4 @@ const PreviewBlogs = () => {
     );
 };
 
-export default PreviewBlogs;
+export default EditBlogs;

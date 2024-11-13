@@ -5,6 +5,7 @@ import axios from 'axios';
 import { HOST, GET_ROUTE, POST_ROUTE, UPLOAD_IMAGE_ROUTE } from '../utils/constants';
 import { AddCircle, RemoveCircleOutline } from '@mui/icons-material';
 import JoditEditor from 'jodit-react';
+import Navbar from '../components/Navbar';
 
 const BlogList = () => {
     const [blogs, setBlogs] = useState([]);
@@ -75,7 +76,8 @@ const BlogList = () => {
 
     return (
         <>
-            <div className="flex justify-center bg-purple-500 h-[100vh] items-center">
+            <Navbar />
+            <div className="flex justify-center bg-purple-500 h-[92vh] items-center">
                 <div className="flex justify-center text-white flex-col">
                     {blogs.map((blog) => (
                         <div className="cursor-pointer font-serif" key={blog.id} onClick={() => navigate(`/blogs/${blog.id}`)}>

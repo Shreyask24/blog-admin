@@ -26,11 +26,11 @@ function App() {
       <Routes>
         <Route path='/sign-up' element={<SignUp />} />
         {token ? (
-          <Route path="/blogs/:blogId" element={<PreviewBlogs />} />
+          <Route path="/blogs" element={<BlogList />} />
         ) : (
           <Route path='/sign-in' element={<SignIn />} />
         )}
-        <Route path="/blogs" element={<BlogList />} />
+        <Route path="/blogs/:blogId" element={<PreviewBlogs />} />
         <Route path='/verify-email' element={<VerifyEmail />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/profile' element={<Profile />} />

@@ -25,7 +25,7 @@ const EditBlogs = () => {
     useEffect(() => {
         const fetchBlog = async () => {
             try {
-                const { data } = await axios.get(`${HOST}/${GET_ROUTE}/${blogId}/`, { headers });
+                const { data } = await axios.get(`${HOST}/${UPDATE_POST_ROUTE}/${blogId}/`, { headers });
                 setBlog(data);
                 setTitle(data.title);
                 setSummary(data.summary);
@@ -78,21 +78,25 @@ const EditBlogs = () => {
     return (
         <>
             <div>
-                <div className="text-white cursor-pointer hover:bg-purple-700 bg-purple-500 rounded-md p-2 w-11 items-center mb-5" onClick={handleToggleEdit}>
-                    <Edit />
-                </div>
-                <div onClick={handleDelete} className="text-white cursor-pointer hover:bg-purple-700 bg-purple-500 rounded-md p-2 w-11 items-center mb-5">
-                    <DeleteSharp />
-                </div>
-                <div onClick={handleArchive} className="text-white cursor-pointer hover:bg-purple-700 bg-purple-500 rounded-md p-2 w-11 items-center mb-5">
-                    <ArchiveOutlined />
-                </div>
+                <div className='flex justify-end bg-white'>
 
+                    <div className="text-white cursor-pointer hover:bg-purple-700 bg-purple-500 rounded-md mr-4 p-2 w-11 items-center mb-5" onClick={handleToggleEdit}>
+                        <Edit />
+                    </div>
+                    <div onClick={handleDelete} className="text-white cursor-pointer hover:bg-purple-700 bg-purple-500 mr-4 rounded-md p-2 w-11 items-center mb-5">
+                        <DeleteSharp />
+                    </div>
+                    <div onClick={handleArchive} className="text-white cursor-pointer hover:bg-purple-700 mr-4 bg-purple-500 rounded-md p-2 w-11 items-center mb-5">
+                        <ArchiveOutlined />
+                    </div>
+
+                </div>
                 {editMode ? (
                     <form onSubmit={handleUpdate} className="shadow-md p-8 bg-white rounded mb-4">
                         <div className="w-[40vw]">
                             <img src={thumbnailUrl} className="border border-none rounded-lg mb-5" alt="" />
                         </div>
+
                         <input
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
@@ -114,22 +118,23 @@ const EditBlogs = () => {
                         </button>
                     </form>
                 ) : (
-                    <div>
-                        <h1>{blog.title}</h1>
+                    <div className='p-5'>
+                        <h1 className='text-2xl font-bold'>{blog.title}</h1>
                         <img src={blog.thumbnail} alt="" />
-                        <h2>{blog.summary}</h2>
-                        <h2>{blog.claps}</h2>
+                        <h2 className='text-lg font-semibold'>{blog.summary}</h2>
                         <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(blog.content) }} />
                     </div>
                 )}
+                <div className='p-5'>
 
-                <div className="flex items-center mt-4">
-                    <Favorite /> <span className="ml-2">{blog.likes_count}</span>
+                    <div className="flex items-center">
+                        <Favorite /> <span className="ml-2">{blog.claps}</span>
+                    </div>
+                    <div>Created: {new Date(blog.created_at).toLocaleString()}</div>
+                    <div>Updated: {new Date(blog.updated_at).toLocaleString()}</div>
+                    <div>Archived: {blog.is_archived ? 'Yes' : 'No'}</div>
+                    <div>Soft Deleted: {blog.is_deleted ? 'Yes' : 'No'}</div>
                 </div>
-                <div>Created: {new Date(blog.created_at).toLocaleString()}</div>
-                <div>Updated: {new Date(blog.updated_at).toLocaleString()}</div>
-                <div>Archived: {blog.is_archived ? 'Yes' : 'No'}</div>
-                <div>Soft Deleted: {blog.is_deleted ? 'Yes' : 'No'}</div>
             </div>
 
 

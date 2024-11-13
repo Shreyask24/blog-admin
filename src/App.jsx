@@ -8,6 +8,8 @@ import Profile from './screens/Profile';
 import ResetPassword from './screens/ResetPassword';
 import { useEffect, useState } from 'react';
 import RecycleBin from './screens/RecycleBin';
+import PreviewBlogs from './screens/PreviewBlogs';
+import BlogList from './screens/BlogList';
 
 function App() {
   const [token, setToken] = useState(!!localStorage.getItem('access_token'));
@@ -24,11 +26,11 @@ function App() {
       <Routes>
         <Route path='/sign-up' element={<SignUp />} />
         {token ? (
-          <Route path='/blogs' element={<Home />} />
+          <Route path="/blogs/:blogId" element={<PreviewBlogs />} />
         ) : (
           <Route path='/sign-in' element={<SignIn />} />
         )}
-        <Route path="/blogs/:id" element={<Home />} />
+        <Route path="/blogs" element={<BlogList />} />
         <Route path='/verify-email' element={<VerifyEmail />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/profile' element={<Profile />} />

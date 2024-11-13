@@ -8,6 +8,7 @@ import axios from 'axios';
 import { AddCircle, RemoveCircleOutline } from '@mui/icons-material';
 import Blogs from './Blogs';
 
+
 const Home = () => {
     const [title, setTitle] = useState("")
     const [blogs, setBlogs] = useState(false)

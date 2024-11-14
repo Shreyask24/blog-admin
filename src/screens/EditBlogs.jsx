@@ -6,6 +6,7 @@ import DOMPurify from 'dompurify';
 import JoditEditor from 'jodit-react';
 import { Edit, DeleteSharp, ArchiveOutlined, Favorite } from '@mui/icons-material';
 import { toast } from 'sonner';
+import Navbar from '../components/Navbar';
 
 const EditBlogs = () => {
     const { blogId } = useParams();
@@ -88,7 +89,8 @@ const EditBlogs = () => {
     return (
         <>
             <div>
-                <div className='flex justify-end bg-white'>
+                <Navbar />
+                <div className='flex justify-end bg-white mt-5'>
                     <div className="text-white cursor-pointer hover:bg-purple-700 bg-purple-500 rounded-md mr-4 p-2 w-11 items-center mb-5" onClick={handleToggleEdit}>
                         <Edit />
                     </div>

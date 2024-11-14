@@ -4,6 +4,7 @@ import Button from '@mui/material/Button'
 import { useState } from "react";
 import axios from "axios";
 import { HOST, SIGNUP_ROUTE } from "../utils/constants";
+import { toast } from "sonner";
 
 export default function SignUp() {
     const [show, setShow] = useState(false)
@@ -18,7 +19,7 @@ export default function SignUp() {
             console.log(name, email, password)
             const response = await axios.post(`${HOST}/${SIGNUP_ROUTE}/`, { name, email, password })
             console.log(response.data)
-            alert(response.data.message)
+            toast.success(response.data.message)
         } catch (error) {
             console.log("Error:", error.message);
         }

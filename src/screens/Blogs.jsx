@@ -109,11 +109,10 @@ const Blogs = () => {
         setEditState(prevState => {
             const newEditState = !prevState[blogId];
 
-            // Update URL based on edit state
             if (newEditState) {
-                navigate(`/blogs/${blogId}/edit`); // Navigate to the edit URL when editing
+                navigate(`/blogs/${blogId}/edit`);
             } else {
-                navigate(`/blogs`); // Go back to the main blogs list when not editing
+                navigate(`/blogs`);
             }
 
             return { ...prevState, [blogId]: newEditState };

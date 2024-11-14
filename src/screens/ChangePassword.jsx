@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { CHANGE_PASSWORD_ROUTE, HOST } from "../utils/constants";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const ChangePassword = () => {
     const location = useLocation();
@@ -37,7 +38,7 @@ const ChangePassword = () => {
 
             console.log(response.data);
 
-            alert(response.data.message);
+            toast.success(response.data.message);
             navigate("/profile");
         } catch (error) {
             console.log("Error:", error.message);

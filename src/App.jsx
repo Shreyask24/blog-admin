@@ -2,7 +2,6 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import SignIn from './screens/SignIn';
 import SignUp from './screens/SignUp';
 import Home from './screens/Home';
-import VerifyEmail from './screens/VerifyEmail';
 import ForgotPassword from './screens/ForgotPassword';
 import Profile from './screens/Profile';
 import ResetPassword from './screens/ResetPassword';
@@ -31,14 +30,13 @@ function App() {
           <Route path='/sign-in' element={<SignIn />} />
         )}
         <Route path="/blogs/:blogId" element={<EditBlogs />} />
-        <Route path='/verify-email' element={<VerifyEmail />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/reset-password' element={<ResetPassword />} />
         <Route path='/change-password' element={<ChangePassword />} />
         <Route path='*' element={<Navigate to={token ? "/blogs" : "/sign-in"} />} />
       </Routes>
-    </BrowserRouter>
+    </BrowserRouter >
   );
 }
 

@@ -5,6 +5,7 @@ import { HOST, GET_ROUTE, UPDATE_POST_ROUTE, DELETE_POST_ROUTE, ARCHIEVED_ROUTE 
 import DOMPurify from 'dompurify';
 import JoditEditor from 'jodit-react';
 import { Edit, DeleteSharp, ArchiveOutlined, Favorite } from '@mui/icons-material';
+import { toast } from 'sonner';
 
 const EditBlogs = () => {
     const { blogId } = useParams();
@@ -15,6 +16,7 @@ const EditBlogs = () => {
     const [summary, setSummary] = useState('');
     const [content, setContent] = useState('');
     const [thumbnailUrl, setThumbnailUrl] = useState('');
+    const [errorMessage, setErrorMessage] = useState(null);
     const accessToken = localStorage.getItem('access_token');
 
     const headers = {
@@ -31,8 +33,9 @@ const EditBlogs = () => {
                 setSummary(data.summary);
                 setContent(data.content);
                 setThumbnailUrl(data.thumbnail);
+                setErrorMessage(null);
             } catch (error) {
-                console.error('Error fetching blog:', error);
+                setErrorMessage(error.response?.data?.detail || 'Error fetching blog');
             } finally {
                 setLoading(false);
             }
@@ -46,8 +49,10 @@ const EditBlogs = () => {
             await axios.patch(`${HOST}/${UPDATE_POST_ROUTE}/${blogId}/`, { title, summary, content }, { headers });
             setEditMode(false);
             setBlog({ ...blog, title, summary, content });
+            setErrorMessage(null);
+            toast.success("Post updated successfully");
         } catch (error) {
-            console.error('Error updating blog:', error);
+            setErrorMessage(error.response?.data?.detail || 'Error updating blog');
         }
     };
 
@@ -56,9 +61,10 @@ const EditBlogs = () => {
     const handleDelete = async () => {
         try {
             await axios.delete(`${HOST}/${DELETE_POST_ROUTE}/${blogId}/`, { headers });
-            alert('Blog deleted successfully');
+            setErrorMessage(null);
+            toast.success('Blog deleted successfully');
         } catch (error) {
-            console.error('Error deleting blog:', error);
+            setErrorMessage(error.response?.data?.detail || 'Error deleting blog');
         }
     };
 
@@ -67,19 +73,22 @@ const EditBlogs = () => {
             const archivedStatus = !blog.is_archived;
             await axios.patch(`${HOST}/${ARCHIEVED_ROUTE}/${blogId}/`, { is_archived: archivedStatus }, { headers });
             setBlog({ ...blog, is_archived: archivedStatus });
+            setErrorMessage(null);
+
+            archivedStatus === true ? toast.success("Archived Successfully!") : toast.success("Unarchived successfully");
         } catch (error) {
-            console.error('Error archiving blog:', error);
+            setErrorMessage(error.response?.data?.detail || 'Error archiving blog');
         }
     };
 
     if (loading) return <div>Loading...</div>;
+    if (errorMessage) return <div>{errorMessage}</div>;
     if (!blog) return <div>Blog not found</div>;
 
     return (
         <>
             <div>
                 <div className='flex justify-end bg-white'>
-
                     <div className="text-white cursor-pointer hover:bg-purple-700 bg-purple-500 rounded-md mr-4 p-2 w-11 items-center mb-5" onClick={handleToggleEdit}>
                         <Edit />
                     </div>
@@ -89,7 +98,6 @@ const EditBlogs = () => {
                     <div onClick={handleArchive} className="text-white cursor-pointer hover:bg-purple-700 mr-4 bg-purple-500 rounded-md p-2 w-11 items-center mb-5">
                         <ArchiveOutlined />
                     </div>
-
                 </div>
                 {editMode ? (
                     <form onSubmit={handleUpdate} className="shadow-md p-8 bg-white rounded mb-4">
@@ -126,7 +134,6 @@ const EditBlogs = () => {
                     </div>
                 )}
                 <div className='p-5'>
-
                     <div className="flex items-center">
                         <Favorite /> <span className="ml-2">{blog.claps}</span>
                     </div>
@@ -136,9 +143,6 @@ const EditBlogs = () => {
                     <div>Soft Deleted: {blog.is_deleted ? 'Yes' : 'No'}</div>
                 </div>
             </div>
-
-
-
         </>
     );
 };

@@ -4,6 +4,7 @@ import Button from '@mui/material/Button'
 import { useState } from "react";
 import axios from "axios";
 import { HOST, RESETPASSWORD_ROUTE, SIGNUP_ROUTE } from "../utils/constants";
+import { toast } from "sonner";
 
 export default function ResetPassword() {
     const location = useLocation();
@@ -26,7 +27,7 @@ export default function ResetPassword() {
             console.log(token, password, confirm_password)
             const response = await axios.post(`${HOST}/${RESETPASSWORD_ROUTE}/`, { token, password, confirm_password })
             console.log(response.data)
-            alert(response.data.message)
+            toast.success(response.data.message)
         } catch (error) {
             console.log("Error:", error.message);
         }

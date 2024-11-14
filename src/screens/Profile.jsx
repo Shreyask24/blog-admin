@@ -1,14 +1,16 @@
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { HOST, PROFILE_ROUTE, UPDATE_PROFILE_ROUTE } from "../utils/constants";
 import { ArrowBack, Edit, HolidayVillage } from "@mui/icons-material";
+import { toast } from "sonner";
 
 const Profile = () => {
     const navigate = useNavigate();
     const [edit, setEdit] = useState(false);
     const [userId, setuserId] = useState("")
+
 
     const { register, formState: { errors }, handleSubmit, setValue, watch } = useForm();
     const accessToken = localStorage.getItem("access_token");
@@ -52,6 +54,7 @@ const Profile = () => {
             setEdit(!edit)
             const response = await axios.patch(`${HOST}/${UPDATE_PROFILE_ROUTE}/`, { name }, { headers });
             console.log(response.data);
+            toast.success("Profile updated successfully")
         } catch (error) {
             console.log("Error updating profile:", error);
         }

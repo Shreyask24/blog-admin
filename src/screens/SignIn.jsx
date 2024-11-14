@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { HOST, SIGNIN_ROUTE } from "../utils/constants";
+import { toast } from "sonner";
 
 export default function SignIn() {
     const navigate = useNavigate()
@@ -18,7 +19,8 @@ export default function SignIn() {
             console.log(email, password)
             const response = await axios.post(`${HOST}/${SIGNIN_ROUTE}/`, { email, password })
             console.log(response.data)
-            alert(response.data.message)
+
+            toast.success(response.data.message)
             localStorage.setItem("access_token", response.data.access)
             window.location.reload()
         } catch (error) {

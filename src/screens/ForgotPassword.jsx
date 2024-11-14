@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { FORGOTPASSWORD_ROUTE, HOST } from "../utils/constants";
 import axios from "axios";
 import OTPInput from "../components/OTP";
+import { toast } from "sonner";
 
 const ForgotPassword = () => {
     const [display, setDisplay] = useState(false)
@@ -17,7 +18,7 @@ const ForgotPassword = () => {
             console.log(email)
             const response = await axios.post(`${HOST}/${FORGOTPASSWORD_ROUTE}/`, { email })
             console.log(response.data)
-            alert(response.data.message)
+            toast.success(response.data.message)
             setDisplay(true)
         } catch (error) {
             console.log("Error:", error.message);
